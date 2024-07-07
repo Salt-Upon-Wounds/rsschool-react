@@ -4,7 +4,7 @@ type Props = {
   children: ReactNode;
 };
 
-export class ErrorBoundery extends Component<Props, { error: boolean }> {
+export class ErrorBoundary extends Component<Props, { error: boolean }> {
   constructor(props: Props) {
     super(props);
     this.state = {
