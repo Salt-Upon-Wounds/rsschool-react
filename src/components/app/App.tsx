@@ -1,35 +1,6 @@
 import { Component } from "react";
 import style from "./App.module.css";
-
-/* function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
- */
+import { ErrorBoundary } from "../error-boundary/ErrorBoundary";
 
 class App extends Component<{}, { value: string }> {
   constructor(props: object) {
@@ -38,11 +9,14 @@ class App extends Component<{}, { value: string }> {
       value: "",
     };
   }
+
   render() {
     return (
-      <div className={style.root}>
-        <h1 className={style.header}>Hello Stranger!</h1>
-      </div>
+      <ErrorBoundary>
+        <div className={style.root}>
+          <h1 className={style.header}>Hello Stranger!</h1>
+        </div>
+      </ErrorBoundary>
     );
   }
 }
