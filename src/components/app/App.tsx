@@ -1,9 +1,7 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Component } from "react";
+import style from "./App.module.css";
 
-function App() {
+/* function App() {
   const [count, setCount] = useState(0)
 
   return (
@@ -31,5 +29,22 @@ function App() {
     </>
   )
 }
+ */
 
-export default App
+class App extends Component<{}, { value: string }> {
+  constructor(props: object) {
+    super(props);
+    this.state = {
+      value: "",
+    };
+  }
+  render() {
+    return (
+      <div className={style.root}>
+        <h1 className={style.header}>Hello Stranger!</h1>
+      </div>
+    );
+  }
+}
+
+export default App;
