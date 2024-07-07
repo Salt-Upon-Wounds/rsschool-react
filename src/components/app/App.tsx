@@ -12,12 +12,16 @@ class App extends Component<{}, { value: string }> {
     };
   }
 
+  rerender = (value: string) => {
+    this.setState({ value });
+  };
+
   render() {
     return (
       <ErrorBoundary>
         <h1 className={style.header}>Hello Stranger!</h1>
-        <SearchPanel></SearchPanel>
-        <ResultList></ResultList>
+        <SearchPanel rerender={this.rerender}></SearchPanel>
+        <ResultList value={this.state.value}></ResultList>
       </ErrorBoundary>
     );
   }

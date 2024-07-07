@@ -1,11 +1,22 @@
 import { Component } from "react";
 import style from "./styles.module.scss";
 
-export class SearchPanel extends Component {
-  state = {
-    value: "",
-    err: false,
+type Props = {
+  rerender: (value: string) => void;
+};
+
+export class SearchPanel extends Component<Props> {
+  state: {
+    value: string;
+    err: boolean;
   };
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      value: "",
+      err: false,
+    };
+  }
 
   searchInput: HTMLInputElement | undefined;
 
@@ -32,13 +43,10 @@ export class SearchPanel extends Component {
   }
 
   search = () => {
-    this.setState({ value: this.searchInput?.value ?? "" });
-    this.save(this.searchInput?.value ?? "");
-    window.dispatchEvent(
-      new CustomEvent<string>("search", {
-        detail: this.searchInput?.value ?? "",
-      }),
-    );
+    const str = this.searchInput?.value ?? "";
+    this.setState({ value: str });
+    this.save(str);
+    this.props.rerender(str);
   };
 
   error = () => {
@@ -54,7 +62,7 @@ export class SearchPanel extends Component {
           className={style.searchInput}
           placeholder="type to search..."
         />
-        <button className={style.searchButton} onClick={this.error}>
+        <button className={style.searchButton} onClick={this.search}>
           Search
         </button>
         <button className={style.errorButton} onClick={this.error}>
