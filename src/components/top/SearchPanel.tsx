@@ -26,7 +26,8 @@ export class SearchPanel extends Component<Props> {
 
   load = () => {
     const value = localStorage.getItem("TaskSearch");
-    if (value) {
+    if (value && this.searchInput) {
+      this.searchInput.value = value;
       this.setState({ value });
     }
   };
