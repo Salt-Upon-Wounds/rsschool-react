@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { ChangeEvent, Component } from "react";
 import style from "./styles.module.scss";
 
 type Props = {
@@ -18,40 +18,33 @@ export class SearchPanel extends Component<Props> {
     };
   }
 
-  searchInput: HTMLInputElement | undefined;
-
   save = (value: string) => {
     localStorage.setItem("TaskSearch", value);
   };
 
   load = () => {
     const value = localStorage.getItem("TaskSearch");
-    if (value && this.searchInput) {
-      this.searchInput.value = value;
+    if (value) {
       this.setState({ value });
     }
   };
 
   componentDidMount() {
-    console.log(style.searchInput);
-    this.searchInput =
-      document.querySelector<HTMLInputElement>(`.${style.searchInput}`) ??
-      undefined;
-    if (!this.searchInput) {
-      throw new Error("search input not found");
-    }
     this.load();
   }
 
   search = () => {
-    const str = this.searchInput?.value ?? "";
-    this.setState({ value: str });
+    const str = this.state.value;
     this.save(str);
     this.props.rerender(str);
   };
 
   error = () => {
     this.setState({ err: true });
+  };
+
+  change = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ value: e.target.value });
   };
 
   render() {
@@ -62,6 +55,8 @@ export class SearchPanel extends Component<Props> {
           type="text"
           className={style.searchInput}
           placeholder="type to search..."
+          value={this.state.value}
+          onChange={this.change}
         />
         <button className={style.searchButton} onClick={this.search}>
           Search
