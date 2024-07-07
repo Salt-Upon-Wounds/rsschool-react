@@ -4,6 +4,7 @@ import style from "./styles.module.scss";
 export class SearchPanel extends Component {
   state = {
     value: "",
+    err: false,
   };
 
   searchInput: HTMLInputElement | undefined;
@@ -20,8 +21,10 @@ export class SearchPanel extends Component {
   };
 
   componentDidMount() {
+    console.log(style.searchInput);
     this.searchInput =
-      document.querySelector<HTMLInputElement>("#search") ?? undefined;
+      document.querySelector<HTMLInputElement>(`.${style.searchInput}`) ??
+      undefined;
     if (!this.searchInput) {
       throw new Error("search input not found");
     }
@@ -31,13 +34,19 @@ export class SearchPanel extends Component {
   search = () => {
     this.setState({ value: this.searchInput?.value ?? "" });
     this.save(this.searchInput?.value ?? "");
+    window.dispatchEvent(
+      new CustomEvent<string>("search", {
+        detail: this.searchInput?.value ?? "",
+      }),
+    );
   };
 
   error = () => {
-    throw new Error("error");
+    this.setState({ err: true });
   };
 
   render() {
+    if (this.state.err) throw new Error("test error");
     return (
       <div className={style.wrapper}>
         <input

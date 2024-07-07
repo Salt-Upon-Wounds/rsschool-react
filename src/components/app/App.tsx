@@ -1,6 +1,8 @@
 import { Component } from "react";
 import style from "./App.module.css";
 import { ErrorBoundary } from "../error-boundary/ErrorBoundary";
+import { SearchPanel } from "../top/SearchPanel";
+import { ResultList } from "../bottom/ResultList";
 
 class App extends Component<{}, { value: string }> {
   constructor(props: object) {
@@ -13,9 +15,9 @@ class App extends Component<{}, { value: string }> {
   render() {
     return (
       <ErrorBoundary>
-        <div className={style.root}>
-          <h1 className={style.header}>Hello Stranger!</h1>
-        </div>
+        <h1 className={style.header}>Hello Stranger!</h1>
+        <SearchPanel></SearchPanel>
+        <ResultList></ResultList>
       </ErrorBoundary>
     );
   }
