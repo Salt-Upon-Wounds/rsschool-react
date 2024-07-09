@@ -12,7 +12,9 @@ module.exports = {
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
-  plugins: ["react-refresh"],
+  parserOptions: { project: ["tsconfig.app.json"] },
+  ignorePatterns: ["/*", "!/src"],
+  plugins: ["react-refresh", "react-compiler"],
   rules: {
     "react-refresh/only-export-components": [
       "warn",
