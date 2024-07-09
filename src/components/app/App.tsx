@@ -4,7 +4,7 @@ import { ErrorBoundary } from "../error-boundary/ErrorBoundary";
 import { SearchPanel } from "../top/SearchPanel";
 import { ResultList } from "../bottom/ResultList";
 
-class App extends Component<{}, { value: string }> {
+class App extends Component<object, { value: string }> {
   constructor(props: object) {
     super(props);
     this.state = {

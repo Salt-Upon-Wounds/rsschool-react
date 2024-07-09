@@ -1,8 +1,8 @@
 import { Component, ErrorInfo, ReactNode } from "react";
 
-type Props = {
+interface Props {
   children: ReactNode;
-};
+}
 
 export class ErrorBoundary extends Component<Props, { error: boolean }> {
   constructor(props: Props) {

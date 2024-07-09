@@ -1,9 +1,9 @@
 import { ChangeEvent, Component } from "react";
 import style from "./styles.module.scss";
 
-type Props = {
+interface Props {
   rerender: (value: string) => void;
-};
+}
 
 export class SearchPanel extends Component<Props> {
   state: {

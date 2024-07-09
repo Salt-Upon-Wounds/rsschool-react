@@ -3,7 +3,9 @@ import { getData, type Species } from "../../services/api";
 import style from "./styles.module.scss";
 import spinner from "../../assets/react.svg";
 
-type Props = { value: string };
+interface Props {
+  value: string;
+}
 
 export class ResultList extends Component<Props> {
   state: {

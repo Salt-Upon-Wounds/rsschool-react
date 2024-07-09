@@ -1,19 +1,21 @@
-export type Species = {
+export interface Species {
   name: string;
   classification: string;
   designation: string;
   average_height: string;
   average_lifespan: string;
-};
+}
 
-export async function getData(value?: string) {
+interface Responce {
+  results: Species[];
+}
+
+export async function getData(value?: string): Promise<Species[]> {
   const url = "https://swapi.dev/api/species/";
 
-  return await fetch(
-    value && value.length ? `${url}?search=${value.trim()}` : url,
-  )
+  return fetch(value?.length ? `${url}?search=${value.trim()}` : url)
     .then((data) => data.json())
-    .then((data) =>
+    .then((data: Responce) =>
       data.results.map((elem: Species) => {
         return {
           name: elem.name,
