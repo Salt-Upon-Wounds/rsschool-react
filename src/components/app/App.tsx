@@ -1,30 +1,25 @@
-import { Component } from "react";
+import { useState } from "react";
 import style from "./App.module.css";
 import { ErrorBoundary } from "../error-boundary/ErrorBoundary";
 import { SearchPanel } from "../top/SearchPanel";
 import { ResultList } from "../bottom/ResultList";
+import { useLS } from "../../hooks/useLS";
 
-class App extends Component<object, { value: string }> {
-  constructor(props: object) {
-    super(props);
-    this.state = {
-      value: "",
-    };
-  }
+function App() {
+  const [initvalue, setInitValue] = useLS();
+  const [value, setValue] = useState(initvalue);
 
-  rerender = (value: string) => {
-    this.setState({ value });
-  };
-
-  render() {
-    return (
-      <ErrorBoundary>
-        <h1 className={style.header}>Hello Stranger!</h1>
-        <SearchPanel rerender={this.rerender}></SearchPanel>
-        <ResultList value={this.state.value}></ResultList>
-      </ErrorBoundary>
-    );
-  }
+  return (
+    <ErrorBoundary>
+      <h1 className={style.header}>Hello Stranger!</h1>
+      <SearchPanel
+        initvalue={initvalue}
+        rerender={setValue}
+        save={setInitValue}
+      ></SearchPanel>
+      <ResultList value={value}></ResultList>
+    </ErrorBoundary>
+  );
 }
 
 export default App;

@@ -1,70 +1,51 @@
-import { ChangeEvent, Component } from "react";
+import { ChangeEvent, useState } from "react";
 import style from "./styles.module.scss";
 
 interface Props {
+  initvalue: string;
   rerender: (value: string) => void;
+  save: (value: string) => void;
 }
 
-export class SearchPanel extends Component<Props> {
-  state: {
-    value: string;
-    err: boolean;
-  };
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      value: "",
-      err: false,
-    };
-  }
+export function SearchPanel(props: Props) {
+  const [value, setValue] = useState(props.initvalue);
+  const [err, setErr] = useState(false);
 
-  save = (value: string) => {
-    localStorage.setItem("TaskSearch", value);
+  const search = () => {
+    const str = value;
+    props.rerender(str);
   };
 
-  load = () => {
-    const value = localStorage.getItem("TaskSearch");
-    if (value) {
-      this.setState({ value });
-    }
+  const error = () => {
+    setErr(true);
   };
 
-  componentDidMount() {
-    this.load();
-  }
-
-  search = () => {
-    const str = this.state.value;
-    this.save(str);
-    this.props.rerender(str);
+  const change = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    props.save(e.target.value);
   };
 
-  error = () => {
-    this.setState({ err: true });
-  };
-
-  change = (e: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ value: e.target.value });
-  };
-
-  render() {
-    if (this.state.err) throw new Error("test error");
-    return (
-      <div className={style.wrapper}>
-        <input
-          type="text"
-          className={style.searchInput}
-          placeholder="type to search..."
-          value={this.state.value}
-          onChange={this.change}
-        />
-        <button className={style.searchButton} onClick={this.search}>
-          Search
-        </button>
-        <button className={style.errorButton} onClick={this.error}>
-          Error
-        </button>
-      </div>
-    );
-  }
+  //if (this.state.err) throw new Error('test error');
+  return (
+    <div className={style.wrapper}>
+      {err
+        ? (() => {
+            throw new Error("test error");
+          })()
+        : ""}
+      <input
+        type="text"
+        className={style.searchInput}
+        placeholder="type to search..."
+        value={value}
+        onChange={change}
+      />
+      <button className={style.searchButton} onClick={search}>
+        Search
+      </button>
+      <button className={style.errorButton} onClick={error}>
+        Error
+      </button>
+    </div>
+  );
 }

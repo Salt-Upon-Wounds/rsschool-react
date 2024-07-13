@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useEffect, useState } from "react";
 import { getData, type Species } from "../../services/api";
 import style from "./styles.module.scss";
 import spinner from "../../assets/react.svg";
@@ -7,43 +7,26 @@ interface Props {
   value: string;
 }
 
-export class ResultList extends Component<Props> {
-  state: {
-    result: Species[];
-    loading: boolean;
-  };
-  key = 0;
+export function ResultList(props: Props) {
+  let key = 0;
+  const [loading, setLoading] = useState(true);
+  const [result, setResult] = useState<Species[]>([]);
+  useEffect(() => {
+    setLoading(true);
+    void getData(props.value ?? "").then((data) => {
+      setResult(data);
+      setLoading(false);
+    });
+  }, [props.value]);
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      result: [],
-      loading: false,
-    };
-  }
-
-  async componentDidMount() {
-    const value = localStorage.getItem("TaskSearch");
-
-    this.setState({ loading: true });
-    const result = await getData(value ?? "");
-    this.setState({ result, loading: false });
-  }
-
-  async componentDidUpdate(prevProps: Props) {
-    if (prevProps.value !== this.props.value) {
-      await this.componentDidMount();
-    }
-  }
-
-  notFound() {
+  function notFound() {
     return <p>Nothing found</p>;
   }
 
-  found() {
-    return this.state.result.map((el: Species) => {
+  function found() {
+    return result.map((el: Species) => {
       return (
-        <li key={this.key++} className={style.elem}>
+        <li key={key++} className={style.elem}>
           <p>Name: {el.name}</p>
           <p>Classification: {el.classification}</p>
           <p>Designation: {el.designation}</p>
@@ -54,19 +37,17 @@ export class ResultList extends Component<Props> {
     });
   }
 
-  result() {
-    return !this.state.result.length ? this.notFound() : this.found();
+  function final() {
+    return !result.length ? notFound() : found();
   }
 
-  render() {
-    return (
-      <ul className={style.wrapper}>
-        {this.state.loading ? (
-          <img src={spinner} alt="loading..." className={style.rotate} />
-        ) : (
-          this.result()
-        )}
-      </ul>
-    );
-  }
+  return (
+    <ul className={style.wrapper}>
+      {loading ? (
+        <img src={spinner} alt="loading..." className={style.rotate} />
+      ) : (
+        final()
+      )}
+    </ul>
+  );
 }
