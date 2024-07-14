@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 
-export function useLS(): [string, (val: string) => void] {
+export function useLS(
+  initial?: string | null,
+): [string, (val: string) => void] {
   const [LSvalue, setLSvalue] = useState(
-    localStorage.getItem("TaskSearch") ?? "",
+    initial ?? localStorage.getItem("TaskSearch") ?? "",
   );
 
   useEffect(() => {

@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { getData, type Species } from "../../services/api";
 import style from "./styles.module.scss";
 import spinner from "../../assets/react.svg";
+import { Pagination } from "../pagination/pagination";
 
 interface Props {
   value: string;
+  page: number;
+  rerender: (page: number) => void;
 }
 
 export function ResultList(props: Props) {
@@ -13,28 +16,37 @@ export function ResultList(props: Props) {
   const [result, setResult] = useState<Species[]>([]);
   useEffect(() => {
     setLoading(true);
-    void getData(props.value ?? "").then((data) => {
+    void getData(props.value ?? "", props.page).then((data) => {
       setResult(data);
       setLoading(false);
     });
-  }, [props.value]);
+  }, [props.value, props.page]);
 
   function notFound() {
     return <p>Nothing found</p>;
   }
 
   function found() {
-    return result.map((el: Species) => {
-      return (
-        <li key={key++} className={style.elem}>
-          <p>Name: {el.name}</p>
-          <p>Classification: {el.classification}</p>
-          <p>Designation: {el.designation}</p>
-          <p>Average Height: {el.average_height}</p>
-          <p>Average Lifespan: {el.average_lifespan}</p>
-        </li>
-      );
-    });
+    return (
+      <>
+        {result.map((el: Species) => {
+          return (
+            <li key={key++} className={style.elem}>
+              <p>Name: {el.name}</p>
+              <p>Classification: {el.classification}</p>
+              <p>Designation: {el.designation}</p>
+              <p>Average Height: {el.average_height}</p>
+              <p>Average Lifespan: {el.average_lifespan}</p>
+            </li>
+          );
+        })}
+        <Pagination
+          page={props.page}
+          length={Math.ceil(result[0].all / 10)}
+          rerender={props.rerender}
+        ></Pagination>
+      </>
+    );
   }
 
   function final() {

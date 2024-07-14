@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import style from "./styles.module.scss";
+import { useSearchParams } from "react-router-dom";
 
 interface Props {
   initvalue: string;
@@ -10,10 +11,14 @@ interface Props {
 export function SearchPanel(props: Props) {
   const [value, setValue] = useState(props.initvalue);
   const [err, setErr] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const search = () => {
     const str = value;
     props.rerender(str);
+    searchParams.set("search", str);
+    searchParams.set("page", "1");
+    setSearchParams(searchParams);
   };
 
   const error = () => {
