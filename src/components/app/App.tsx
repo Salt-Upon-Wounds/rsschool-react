@@ -4,7 +4,12 @@ import { ErrorBoundary } from "../error-boundary/ErrorBoundary";
 import { SearchPanel } from "../top/SearchPanel";
 import { ResultList } from "../bottom/ResultList";
 import { useLS } from "../../hooks/useLS";
-import { Outlet, useLocation, useSearchParams } from "react-router-dom";
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 
 function App() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -14,6 +19,7 @@ function App() {
 
   const [initvalue, setInitValue] = useLS(searchParam);
   const [value, setValue] = useState(initvalue);
+  const navigate = useNavigate();
 
   const location = useLocation();
   console.log(location.pathname);
@@ -34,9 +40,13 @@ function App() {
     searchParam,
   ]);
 
+  function nonSideClickHandler() {
+    if (location.pathname !== "/") navigate("/");
+  }
+
   return (
     <ErrorBoundary>
-      <div className="main">
+      <div className={style.main} onClick={nonSideClickHandler}>
         <h1 className={style.header}>Hello Stranger!</h1>
         <SearchPanel
           initvalue={initvalue}

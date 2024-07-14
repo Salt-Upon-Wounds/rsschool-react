@@ -1,0 +1,15 @@
+.rotate {
+  width: 100px;
+  height: 100px;
+  animation: spinner 1.5s linear infinite;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.wrapper {
+  padding: 20px;
+}

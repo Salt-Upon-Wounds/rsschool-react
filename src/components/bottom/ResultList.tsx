@@ -33,7 +33,7 @@ export function ResultList(props: Props) {
         {result.map((el: Species) => {
           return (
             <li key={key++} className={style.elem}>
-              <Link to={`/species/${el.name}`}>
+              <Link to={`/species/${el.url.split("/").slice(-2, -1)[0]}`}>
                 <p>Name: {el.name}</p>
                 <p>Classification: {el.classification}</p>
                 <p>Designation: {el.designation}</p>

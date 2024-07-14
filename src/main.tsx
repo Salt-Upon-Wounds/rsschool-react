@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorMessage />,
     children: [
       {
-        path: "species/:name",
+        path: "species/:id",
         element: <Sideinfo></Sideinfo>,
       },
     ],
