@@ -3,6 +3,7 @@ import { getData, type Species } from "../../services/api";
 import style from "./styles.module.scss";
 import spinner from "../../assets/react.svg";
 import { Pagination } from "../pagination/pagination";
+import { Link } from "react-router-dom";
 
 interface Props {
   value: string;
@@ -32,11 +33,13 @@ export function ResultList(props: Props) {
         {result.map((el: Species) => {
           return (
             <li key={key++} className={style.elem}>
-              <p>Name: {el.name}</p>
-              <p>Classification: {el.classification}</p>
-              <p>Designation: {el.designation}</p>
-              <p>Average Height: {el.average_height}</p>
-              <p>Average Lifespan: {el.average_lifespan}</p>
+              <Link to={`/species/${el.name}`}>
+                <p>Name: {el.name}</p>
+                <p>Classification: {el.classification}</p>
+                <p>Designation: {el.designation}</p>
+                <p>Average Height: {el.average_height}</p>
+                <p>Average Lifespan: {el.average_lifespan}</p>
+              </Link>
             </li>
           );
         })}

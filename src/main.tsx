@@ -4,12 +4,19 @@ import App from "./components/app/App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import { ErrorMessage } from "./components/error/error";
+import { Sideinfo } from "./components/sideinfo/sideinfo";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     errorElement: <ErrorMessage />,
+    children: [
+      {
+        path: "species/:name",
+        element: <Sideinfo></Sideinfo>,
+      },
+    ],
   },
 ]);
 

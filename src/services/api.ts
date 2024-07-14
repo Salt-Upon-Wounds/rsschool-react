@@ -32,5 +32,6 @@ export async function getData(value?: string, page = 1): Promise<Species[]> {
           average_lifespan: elem.average_lifespan,
         };
       });
-    });
+    })
+    .catch(() => []);
 }
