@@ -10,18 +10,26 @@
     "preview": "vite preview",
     "prepare": "husky",
     "format:fix": "prettier --write ./src",
-    "format": "prettier --check ./src"
+    "format": "prettier --check ./src",
+    "test": "vitest --coverage.enabled --coverage.all --coverage.src='./src --coverage.reportOnFailure=true",
+    "coverage": "vitest --ui --coverage.enabled --coverage.all --coverage.src='./src --coverage.reporter='json'"
   },
   "dependencies": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.24.1"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/react": "^16.0.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
     "@vitejs/plugin-react": "^4.3.1",
+    "@vitest/coverage-v8": "^2.0.2",
+    "@vitest/ui": "^2.0.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.34.3",
@@ -29,11 +37,13 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "husky": "^9.0.11",
+    "jsdom": "^24.1.0",
     "lint-staged": "^15.2.7",
     "prettier": "3.3.2",
     "sass": "^1.77.6",
     "typescript": "^5.2.2",
-    "vite": "^5.3.1"
+    "vite": "^5.3.1",
+    "vitest": "^2.0.2"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
