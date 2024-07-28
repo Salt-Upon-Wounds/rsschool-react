@@ -15,8 +15,10 @@
     "coverage": "vitest --ui --coverage.enabled --coverage.all --coverage.src='./src --coverage.reporter='json'"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.2.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-redux": "^9.1.2",
     "react-router-dom": "^6.24.1"
   },
   "devDependencies": {

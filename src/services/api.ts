@@ -1,3 +1,5 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
 export interface Species {
   all: number;
   name: string;
@@ -8,12 +10,29 @@ export interface Species {
   url: string;
 }
 
-interface Responce {
+export interface Responce {
   results: Species[];
   count: number;
   next: string;
   previous: string;
 }
+
+export const SWApi = createApi({
+  reducerPath: "api",
+  baseQuery: fetchBaseQuery({ baseUrl: "https://swapi.dev/api/" }),
+  endpoints: (builder) => ({
+    getSpecies: builder.query<Responce, string>({
+      query: (search?: string, page = 1) =>
+        `species/${search?.length ? `${`?page=${page}`}&search=${search.trim()}` : `?page=${page}`}`,
+    }),
+    getSpeciesById: builder.query<Responce, string>({
+      query: (id: string) => `species/${id}/`,
+    }),
+    getPlanetById: builder.query<Responce, string>({
+      query: (id: string) => `planets/${id}/`,
+    }),
+  }),
+});
 
 export async function getInfoAbout(id: string) {
   return fetch(`https://swapi.dev/api/species/${id}/`)
