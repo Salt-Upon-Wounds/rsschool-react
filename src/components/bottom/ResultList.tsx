@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { getData, type Species } from "../../services/api";
+import { SWApi, type Species } from "../../services/api";
 import style from "./styles.module.scss";
 import spinner from "../../assets/react.svg";
 import { Pagination } from "../pagination/pagination";
@@ -13,15 +12,11 @@ interface Props {
 
 export function ResultList(props: Props) {
   let key = 0;
-  const [loading, setLoading] = useState(true);
-  const [result, setResult] = useState<Species[]>([]);
-  useEffect(() => {
-    setLoading(true);
-    void getData(props.value ?? "", props.page).then((data) => {
-      setResult(data);
-      setLoading(false);
-    });
-  }, [props.value, props.page]);
+
+  const { data, isLoading, isFetching } = SWApi.useGetSpeciesQuery({
+    search: props.value,
+    page: props.page,
+  });
 
   function notFound() {
     return <p>Nothing found</p>;
@@ -30,7 +25,7 @@ export function ResultList(props: Props) {
   function found() {
     return (
       <>
-        {result.map((el: Species) => {
+        {data?.map((el: Species, id: number) => {
           return (
             <li key={key++} className={style.elem}>
               <Link to={`/species/${el.url.split("/").slice(-2, -1)[0]}`}>
@@ -40,12 +35,14 @@ export function ResultList(props: Props) {
                 <p>Average Height: {el.average_height}</p>
                 <p>Average Lifespan: {el.average_lifespan}</p>
               </Link>
+              <input type="checkbox" id={`checkbox${id}`}></input>
+              <label htmlFor={`checkbox${id}`}>save</label>
             </li>
           );
         })}
         <Pagination
           page={props.page}
-          length={Math.ceil(result[0].all / 10)}
+          length={data ? Math.ceil(data[0]?.all / 10) : 0}
           rerender={props.rerender}
         ></Pagination>
       </>
@@ -53,12 +50,12 @@ export function ResultList(props: Props) {
   }
 
   function final() {
-    return !result.length ? notFound() : found();
+    return data && data?.length > 0 ? found() : notFound();
   }
 
   return (
     <ul className={style.wrapper}>
-      {loading ? (
+      {isLoading || isFetching ? (
         <img src={spinner} alt="loading..." className={style.rotate} />
       ) : (
         final()

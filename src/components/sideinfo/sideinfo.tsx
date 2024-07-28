@@ -1,21 +1,27 @@
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getInfoAbout } from "../../services/api";
+import { SWApi } from "../../services/api";
 import style from "./styles.module.scss";
 import spinner from "../../assets/react.svg";
 
 export function Sideinfo() {
   const { id } = useParams();
-  const [loading, setLoading] = useState(true);
-  const [result, setResult] = useState("");
+  /* const [loading, setLoading] = useState(true);
+  const [result, setResult] = useState(""); */
   const navigate = useNavigate();
-  useEffect(() => {
-    setLoading(true);
-    void getInfoAbout(id ?? "1").then((data) => {
-      setResult(data);
-      setLoading(false);
-    });
-  }, [id]);
+
+  const {
+    data: species,
+    isLoading: isLoadingSpecies,
+    isFetching: isFetchingSpecies,
+  } = SWApi.useGetSpeciesByIdQuery(id ?? "1");
+
+  const {
+    data: planet,
+    isLoading: isLoadingPlanet,
+    isFetching: isFetchingPlanet,
+  } = SWApi.useGetPlanetByIdQuery(
+    species?.homeworld?.replace(/[^0-9]+/g, "") ?? "",
+  );
 
   function handler() {
     navigate("/");
@@ -23,14 +29,21 @@ export function Sideinfo() {
 
   return (
     <div className={style.wrapper}>
-      {loading ? (
-        <img src={spinner} alt="loading..." className={style.rotate} />
+      {isLoadingPlanet ||
+      isFetchingPlanet ||
+      isLoadingSpecies ||
+      isFetchingSpecies ? (
+        <img
+          src={spinner}
+          alt="loading..."
+          className={`${style.rotate} ${style.top}`}
+        />
       ) : (
-        <div>
+        <div className={style.top}>
           <p>
             This creature is from:
             <br />
-            {result}
+            {planet ?? "n/a"}
           </p>
           <button onClick={handler}>Close</button>
         </div>

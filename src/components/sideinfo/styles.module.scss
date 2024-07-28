@@ -12,4 +12,9 @@
 
 .wrapper {
   padding: 20px;
+  flex-grow: 1.5;
+}
+
+.top {
+  position: fixed;
 }
