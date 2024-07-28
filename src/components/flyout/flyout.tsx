@@ -15,6 +15,33 @@ export function Flyout(props: { rerender: () => void }) {
     setCounter(savedData.length);
   }, [savedData]);
 
+  const convertToCSV = (): [string, number] => {
+    const array = savedData;
+    let str = "";
+
+    for (const el of array) {
+      let line = "";
+      for (const [, val] of Object.entries(el)) {
+        if (line !== "") line += ",";
+        line += val;
+      }
+      str += line + "\r\n";
+    }
+    return [str, array.length];
+  };
+
+  const downloadCSV = () => {
+    const [blob, len] = convertToCSV();
+    const csvData = new Blob([blob], { type: "text/csv" });
+    const csvURL = URL.createObjectURL(csvData);
+    const link = document.createElement("a");
+    link.href = csvURL;
+    link.download = `spieces_${len}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className={`${style.panel} ${counter ? style.active : ""}`}>
       <p className={style.text}>{counter} items selected</p>
@@ -27,7 +54,7 @@ export function Flyout(props: { rerender: () => void }) {
         >
           Unselect all
         </button>
-        <button>Download</button>
+        <button onClick={downloadCSV}>Download</button>
       </div>
     </div>
   );
