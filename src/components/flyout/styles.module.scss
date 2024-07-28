@@ -1,0 +1,36 @@
+.panel {
+  position: fixed;
+  bottom: -100%;
+  left: 2%;
+  visibility: hidden;
+  border: 1px solid plum;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  transition: bottom 1s;
+  border-radius: 10px;
+  background-color: rgba($color: #17889c, $alpha: 0.5);
+}
+
+.active {
+  bottom: 7%;
+  visibility: visible;
+}
+
+.wrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  button {
+    background-color: transparent;
+  }
+}
+
+.text {
+  margin: 0;
+  color: black;
+}

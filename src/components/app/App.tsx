@@ -10,6 +10,7 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+import { Flyout } from "../flyout/flyout";
 
 function App() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -54,6 +55,7 @@ function App() {
           save={setInitValue}
         ></SearchPanel>
         <ResultList value={value} page={page} rerender={setPage}></ResultList>
+        <Flyout></Flyout>
       </div>
       <Outlet />
     </ErrorBoundary>

@@ -52,13 +52,3 @@ export const SWApi = createApi({
     }),
   }),
 });
-
-export async function getInfoAbout(id: string) {
-  return fetch(`https://swapi.dev/api/species/${id}/`)
-    .then((data) => data.json())
-    .then((data: Record<string, string>) =>
-      fetch(data.homeworld)
-        .then((data) => data.json())
-        .then((data: Record<string, string>) => data.name),
-    );
-}
