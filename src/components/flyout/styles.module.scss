@@ -12,7 +12,7 @@
   justify-content: center;
   transition: bottom 1s;
   border-radius: 10px;
-  background-color: rgba($color: #17889c, $alpha: 0.5);
+  background-color: rgba($color: #17889c, $alpha: 0.9);
 }
 
 .active {
@@ -36,6 +36,6 @@
 }
 
 .dark {
-  background-color: rgba($color: #a51865, $alpha: 0.5);
+  background-color: rgba($color: #a51865, $alpha: 0.9);
   border-color: black;
 }
