@@ -16,6 +16,7 @@ interface Props {
 
 export function ResultList(props: Props) {
   const savedData = useRef<Species[]>([]);
+  let renderedData: Species[] = [];
 
   // useSelector without re-render
   useSelector<{ api: unknown; data: Species[] }, Species[]>(
@@ -42,48 +43,48 @@ export function ResultList(props: Props) {
     if (!input.checked && input.dataset.url) {
       dispatch(
         itemRemoved(
-          savedData.current.filter((el) => el.url === input.dataset.url)[0],
+          renderedData.filter((el) => el.url === input.dataset.url)[0],
         ),
       );
     } else if (data) {
-      dispatch(itemAdded(data.filter((el) => el.url === input.dataset.url)[0]));
+      dispatch(
+        itemAdded(renderedData.filter((el) => el.url === input.dataset.url)[0]),
+      );
     }
   }
 
   function found() {
+    renderedData = savedData.current.concat(
+      data?.filter(
+        (el: Species) =>
+          savedData.current.findIndex((sel) => sel.url === el.url) === -1,
+      ) ?? [],
+    );
     return (
       <>
-        {savedData.current
-          .concat(
-            data?.filter(
-              (el: Species) =>
-                savedData.current.findIndex((sel) => sel.url === el.url) === -1,
-            ) ?? [],
-          )
-          .map((el: Species, id: number) => {
-            return (
-              <li key={nanoid()} className={style.elem}>
-                <Link to={`/species/${el.url.split("/").slice(-2, -1)[0]}`}>
-                  <p>Name: {el.name}</p>
-                  <p>Classification: {el.classification}</p>
-                  <p>Designation: {el.designation}</p>
-                  <p>Average Height: {el.average_height}</p>
-                  <p>Average Lifespan: {el.average_lifespan}</p>
-                </Link>
-                <input
-                  type="checkbox"
-                  data-url={el.url}
-                  id={`checkbox${id}`}
-                  defaultChecked={
-                    savedData.current.findIndex((sel) => sel.url === el.url) >
-                    -1
-                  }
-                  onClick={checkboxHandler}
-                />
-                <label htmlFor={`checkbox${id}`}>save</label>
-              </li>
-            );
-          })}
+        {renderedData.map((el: Species, id: number) => {
+          return (
+            <li key={nanoid()} className={style.elem}>
+              <Link to={`/species/${el.url.split("/").slice(-2, -1)[0]}`}>
+                <p>Name: {el.name}</p>
+                <p>Classification: {el.classification}</p>
+                <p>Designation: {el.designation}</p>
+                <p>Average Height: {el.average_height}</p>
+                <p>Average Lifespan: {el.average_lifespan}</p>
+              </Link>
+              <input
+                type="checkbox"
+                data-url={el.url}
+                id={`checkbox${id}`}
+                defaultChecked={
+                  savedData.current.findIndex((sel) => sel.url === el.url) > -1
+                }
+                onClick={checkboxHandler}
+              />
+              <label htmlFor={`checkbox${id}`}>save</label>
+            </li>
+          );
+        })}
         <Pagination
           page={props.page}
           length={data ? Math.ceil(data[0]?.all / 10) : 0}

@@ -18,3 +18,14 @@
 .top {
   position: fixed;
 }
+
+.dark {
+  background-color: rgb(74, 81, 87);
+  p,
+  button {
+    color: white;
+  }
+  button {
+    background-color: rgb(42, 46, 49);
+  }
+}

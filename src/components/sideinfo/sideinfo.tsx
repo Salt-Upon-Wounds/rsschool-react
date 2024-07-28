@@ -2,11 +2,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { SWApi } from "../../services/api";
 import style from "./styles.module.scss";
 import spinner from "../../assets/react.svg";
+import { useContext } from "react";
+import { ThemeContext } from "../app/App";
 
 export function Sideinfo() {
   const { id } = useParams();
-  /* const [loading, setLoading] = useState(true);
-  const [result, setResult] = useState(""); */
+  const theme = useContext(ThemeContext);
   const navigate = useNavigate();
 
   const {
@@ -28,7 +29,7 @@ export function Sideinfo() {
   }
 
   return (
-    <div className={style.wrapper}>
+    <div className={`${style.wrapper} ${theme === "light" ? "" : style.dark}`}>
       {isLoadingPlanet ||
       isFetchingPlanet ||
       isLoadingSpecies ||

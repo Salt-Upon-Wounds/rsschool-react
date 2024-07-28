@@ -2,10 +2,12 @@ import { useDispatch, useSelector } from "react-redux";
 import style from "./styles.module.scss";
 import { itemsClear } from "../../redux/dataSlice";
 import { Species } from "../../services/api";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ThemeContext } from "../app/App";
 
 export function Flyout(props: { rerender: () => void }) {
   const dispatch = useDispatch();
+  const theme = useContext(ThemeContext);
 
   const savedData = useSelector<{ api: unknown; data: Species[] }, Species[]>(
     (state) => state.data,
@@ -43,7 +45,9 @@ export function Flyout(props: { rerender: () => void }) {
   };
 
   return (
-    <div className={`${style.panel} ${counter ? style.active : ""}`}>
+    <div
+      className={`${style.panel} ${counter ? style.active : ""} ${theme === "light" ? "" : style.dark}`}
+    >
       <p className={style.text}>{counter} items selected</p>
       <div className={style.wrapper}>
         <button
