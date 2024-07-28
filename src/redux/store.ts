@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { SWApi } from "../services/api";
 import { setupListeners } from "@reduxjs/toolkit/query";
+import dataReducer from "./dataSlice";
 
 export const store = configureStore({
   reducer: {
     [SWApi.reducerPath]: SWApi.reducer,
+    data: dataReducer,
   },
 
   middleware: (getDefaultMiddleware) =>

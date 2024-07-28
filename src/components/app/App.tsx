@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import style from "./App.module.css";
 import { ErrorBoundary } from "../error-boundary/ErrorBoundary";
 import { SearchPanel } from "../top/SearchPanel";
@@ -45,6 +45,8 @@ function App() {
     if (location.pathname !== "/") navigate("/");
   }
 
+  const [, forceUpdate] = useReducer((x: number) => x + 1, 0);
+
   return (
     <ErrorBoundary>
       <div className={style.main} onClick={nonSideClickHandler}>
@@ -55,7 +57,7 @@ function App() {
           save={setInitValue}
         ></SearchPanel>
         <ResultList value={value} page={page} rerender={setPage}></ResultList>
-        <Flyout></Flyout>
+        <Flyout rerender={forceUpdate}></Flyout>
       </div>
       <Outlet />
     </ErrorBoundary>
