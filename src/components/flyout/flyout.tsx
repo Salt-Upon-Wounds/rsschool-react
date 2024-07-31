@@ -13,8 +13,13 @@ export function Flyout(props: { rerender: () => void }) {
     (state) => state.data,
   );
   const [counter, setCounter] = useState(savedData.length);
+  const [linkData, setLinkData] = useState<{ href: string; download: string }>({
+    href: "",
+    download: "",
+  });
   useEffect(() => {
     setCounter(savedData.length);
+    downloadCSV();
   }, [savedData]);
 
   const convertToCSV = (): [string, number] => {
@@ -36,12 +41,7 @@ export function Flyout(props: { rerender: () => void }) {
     const [blob, len] = convertToCSV();
     const csvData = new Blob([blob], { type: "text/csv" });
     const csvURL = URL.createObjectURL(csvData);
-    const link = document.createElement("a");
-    link.href = csvURL;
-    link.download = `spieces_${len}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    setLinkData({ href: csvURL, download: `spieces_${len}.csv` });
   };
 
   return (
@@ -58,7 +58,9 @@ export function Flyout(props: { rerender: () => void }) {
         >
           Unselect all
         </button>
-        <button onClick={downloadCSV}>Download</button>
+        <a href={linkData.href} download={linkData.download}>
+          <button>Download</button>
+        </a>
       </div>
     </div>
   );
