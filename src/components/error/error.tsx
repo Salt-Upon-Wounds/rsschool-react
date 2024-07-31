@@ -13,7 +13,6 @@ export function ErrorMessage() {
   } else if (typeof error === "string") {
     errorMessage = error;
   } else {
-    console.error(error);
     errorMessage = "Unknown error";
   }
 
