@@ -22,6 +22,7 @@ export function Sideinfo() {
     isFetching: isFetchingPlanet,
   } = SWApi.useGetPlanetByIdQuery(
     species?.homeworld?.replace(/[^0-9]+/g, "") ?? "",
+    { skip: !species },
   );
 
   function handler() {

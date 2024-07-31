@@ -1,4 +1,4 @@
-import { Component, ErrorInfo, ReactNode } from "react";
+import { Component, ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
@@ -12,11 +12,10 @@ export class ErrorBoundary extends Component<Props, { error: boolean }> {
     };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch() {
     this.setState({
       error: true,
     });
-    console.log(error, errorInfo);
   }
   render() {
     if (this.state.error) {

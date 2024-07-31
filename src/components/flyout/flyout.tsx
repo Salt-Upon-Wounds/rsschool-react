@@ -19,30 +19,31 @@ export function Flyout(props: { rerender: () => void }) {
   });
   useEffect(() => {
     setCounter(savedData.length);
+
+    function convertToCSV(): [string, number] {
+      const array = savedData;
+      let str = "";
+
+      for (const el of array) {
+        let line = "";
+        for (const [, val] of Object.entries(el)) {
+          if (line !== "") line += ",";
+          line += val;
+        }
+        str += line + "\r\n";
+      }
+      return [str, array.length];
+    }
+
+    function downloadCSV() {
+      const [blob, len] = convertToCSV();
+      const csvData = new Blob([blob], { type: "text/csv" });
+      const csvURL = URL.createObjectURL(csvData);
+      setLinkData({ href: csvURL, download: `spieces_${len}.csv` });
+    }
+
     downloadCSV();
   }, [savedData]);
-
-  const convertToCSV = (): [string, number] => {
-    const array = savedData;
-    let str = "";
-
-    for (const el of array) {
-      let line = "";
-      for (const [, val] of Object.entries(el)) {
-        if (line !== "") line += ",";
-        line += val;
-      }
-      str += line + "\r\n";
-    }
-    return [str, array.length];
-  };
-
-  const downloadCSV = () => {
-    const [blob, len] = convertToCSV();
-    const csvData = new Blob([blob], { type: "text/csv" });
-    const csvURL = URL.createObjectURL(csvData);
-    setLinkData({ href: csvURL, download: `spieces_${len}.csv` });
-  };
 
   return (
     <div
